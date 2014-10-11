@@ -8,7 +8,7 @@ RUN rpm -Uvh http://mirror.webtatic.com/yum/el6/latest.rpm
 Run yum -y update
 
 # install packages
-RUN yum -y --enablerepo=remi install mysql-server mysql
+RUN yum -y install mysql55w mysql55w-server
 ADD ./root/packages.sh /packages.sh
 RUN chmod 755 /packages.sh
 RUN /packages.sh
