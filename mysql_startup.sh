@@ -16,4 +16,4 @@ if [ ! -f /var/lib/mysql/ibdata1 ]; then
 fi
 
 #/usr/bin/mysqld_safe &
-/usr/libexec/mysqld 
+/usr/libexec/mysqld --max_allowed_packet=250M
