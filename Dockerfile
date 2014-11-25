@@ -7,6 +7,9 @@ RUN rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 RUN rpm -Uvh http://mirror.webtatic.com/yum/el6/latest.rpm
 Run yum -y update
 
+# set time to EST5EDT
+RUN ln -sf /usr/share/zoneinfo/EST5EDT /etc/localtime
+
 # install packages
 RUN yum -y --enablerepo=remi install mysql-server mysql
 ADD ./root/packages.sh /packages.sh
