@@ -5,6 +5,9 @@ FROM centos:centos5
 RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
 Run yum -y update
 
+# set time to EST5EDT
+RUN ln -sf /usr/share/zoneinfo/EST5EDT /etc/localtime
+
 # install packages
 RUN yum -y install mysql-server mysql
 ADD ./root/packages.sh /packages.sh
