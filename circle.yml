@@ -1,0 +1,33 @@
+machine:
+  ruby:
+    version: rbx-2.2.6
+  services:
+    - docker
+
+dependencies:
+  override:
+    - sudo pip install --upgrade docker-compose==1.2.0
+    - bundle install
+    - mkdir ~/reports
+
+test:
+  override:
+    # start mysql in background
+    - docker-compose -f docker-compose.yml --project-name=dockerenv up -d
+    - rake spec:
+        timeout: 1200
+    # test db
+    - docker run --user=mysql -i -t -v="/home/ubuntu/dockerenv_mysql/tests:/usr/local/bin" --link="dockerenv_db_1:db_1" avatarnewyork/dockerenv-mysql /usr/local/bin/mysql_test.sh > /home/ubuntu/reports/mysql_test.txt
+    - if [ $(grep -c 1 $CIRCLE_ARTIFACTS/mysql_test.txt) -ne 1 ]; then exit 1; fi
+
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit
+    - find . -type f -name "results.xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - cd ~/reports; find . -type f -name "mysql_test.txt" -exec cp {} $CIRCLE_ARTIFACTS/ \;
+
+deployment:
+  production:
+    branch: [master, mysql50, mysql55]
+    commands:
+      - ./deploy.sh
+
