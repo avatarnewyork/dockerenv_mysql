@@ -29,13 +29,13 @@ describe "Dockerfile" do
     expect(package("mysql-server")).to be_installed
   end
 
-  it "installs mysql user" do
+  describe "installs mysql user" do
     describe user('root') do
       it { should exist }
     end
   end
 
-  it "sets the timezone to EDT" do
+  describe "sets the timezone to EDT" do
     describe file('/etc/localtime') do
       it { should be_linked_to '/usr/share/zoneinfo/EST5EDT' }
     end
@@ -44,7 +44,7 @@ describe "Dockerfile" do
   
   describe 'Misc Settings' do
     describe command('mysql -V') do
-      its(:stdout) { should match "mysql  Ver 14.14 Distrib 5.5.40, for Linux (x86_64) using readline 5.1" }
+      its(:stdout) { should include "mysql  Ver 14.14 Distrib 5.5" }
     end
   end
   
