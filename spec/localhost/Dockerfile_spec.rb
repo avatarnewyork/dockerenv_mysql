@@ -42,7 +42,7 @@ describe "Dockerfile" do
   end  
 
   describe 'Misc Settings' do
-    describe command('mysql -uroot -BN -e "select version();"') do
+    describe command('mysql -uadmin -padmin -h127.0.0.1 -BN -e "select version();"') do
       its(:stdout) { should match "5.5.40" }
     end
   end
