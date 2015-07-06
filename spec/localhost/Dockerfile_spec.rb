@@ -44,7 +44,7 @@ describe "Dockerfile" do
   
   describe 'Misc Settings' do
     describe command('mysql -V') do
-      its(:stdout) { should include "mysql  Ver 14.14 Distrib 5.5" }
+      its(:stdout) { should include "Distrib 5.1" }
     end
   end
   
