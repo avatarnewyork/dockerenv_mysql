@@ -17,7 +17,7 @@ test:
     - rake spec:
         timeout: 1200
     # test db
-    - docker run --user=mysql -i -t -v="~/reports:/mnt" -v="/home/ubuntu/dockerenv_mysql/tests:/usr/local/bin" --link="dockerenv_db_1:db_1" avatarnewyork/dockerenv-mysql /usr/local/bin/mysql_test.sh > /mnt/mysql_test.txt
+    - docker run --user=mysql -i -t -v="/home/ubuntu/dockerenv_mysql/tests:/usr/local/bin" --link="dockerenv_db_1:db_1" avatarnewyork/dockerenv-mysql /usr/local/bin/mysql_test.sh > /home/ubuntu/reports/mysql_test.txt
     - if [ $(grep -c 1 $CIRCLE_ARTIFACTS/mysql_test.txt) -ne 1 ]; then exit 1; fi
 
   post:
