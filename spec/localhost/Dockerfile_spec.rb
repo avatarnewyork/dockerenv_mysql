@@ -42,8 +42,8 @@ describe "Dockerfile" do
   end  
 
   describe 'Misc Settings' do
-    describe command('mysql -uadmin -padmin -h127.0.0.1 -BN -e "select version();"') do
-      its(:stdout) { should match "5.5.40" }
+    describe command('mysql -V') do
+      its(:stdout) { should match "mysql  Ver 14.14 Distrib 5.5.40, for Linux (x86_64) using readline 5.1" }
     end
   end
 
