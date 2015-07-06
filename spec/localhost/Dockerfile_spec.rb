@@ -41,16 +41,6 @@ describe "Dockerfile" do
     end
   end  
 
-  describe 'MySQL config parameters' do
-    context mysql_config('datadir') do
-      its(:value) { should eq '/var/lib/mysql' }
-    end
-    
-    context mysql_config('socket') do
-      its(:value) { should eq '/var/lib/mysql/mysql.sock' }
-    end
-  end
-
   describe 'Misc Settings' do
     describe command('mysql -uroot -BN -e "select version();"') do
       its(:stdout) { should match "5.5.40" }
