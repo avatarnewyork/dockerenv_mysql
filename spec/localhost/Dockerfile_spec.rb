@@ -40,13 +40,14 @@ describe "Dockerfile" do
       it { should be_linked_to '/usr/share/zoneinfo/EST5EDT' }
     end
   end  
-
+  
+  
   describe 'Misc Settings' do
     describe command('mysql -V') do
       its(:stdout) { should match "mysql  Ver 14.14 Distrib 5.5.40, for Linux (x86_64) using readline 5.1" }
     end
   end
-
+  
   def os_version
     command("/bin/cat /etc/redhat-release").stdout
   end
