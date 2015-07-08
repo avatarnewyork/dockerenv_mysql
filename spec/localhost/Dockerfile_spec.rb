@@ -24,9 +24,10 @@ describe "Dockerfile" do
     expect(os_version).to include("CentOS release 6.6")
   end
 
-  it "installs required packages" do
-    expect(package("mysql")).to be_installed
-    expect(package("mysql-server")).to be_installed
+  describe "mysql56-community repo should be enabled" do
+    describe yumrepo('mysql56-community') do
+      it { should be_enabled }
+    end
   end
 
   describe "installs mysql user" do
