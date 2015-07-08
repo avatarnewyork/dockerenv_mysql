@@ -6,6 +6,8 @@ if [ ! -f /var/lib/mysql/ibdata1 ]; then
     /usr/bin/mysql_install_db
     sleep 10s
 
+    chown -R mysql:mysql /var/lib/mysql
+
     /usr/bin/mysqld_safe &
     sleep 10s
 
@@ -15,5 +17,4 @@ if [ ! -f /var/lib/mysql/ibdata1 ]; then
     sleep 10s
 fi
 
-#/usr/bin/mysqld_safe &
-/usr/libexec/mysqld --max_allowed_packet=250M
+/usr/sbin/mysqld --user=mysql --max_allowed_packet=250M

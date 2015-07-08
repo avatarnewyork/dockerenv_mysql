@@ -10,7 +10,7 @@ Run yum -y update
 RUN ln -sf /usr/share/zoneinfo/EST5EDT /etc/localtime
 
 # install packages
-RUN yum -y --enablerepo=mysql56-community install mysql-server mysql
+RUN yum -y --disablerepo=epel --enablerepo=mysql56-community install mysql-server mysql
 ADD ./root/packages.sh /packages.sh
 RUN chmod 755 /packages.sh
 RUN /packages.sh
