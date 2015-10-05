@@ -24,8 +24,12 @@ describe "Dockerfile" do
     expect(os_version).to include("CentOS release 6.6")
   end
 
-  describe "mysql56-community repo should be enabled" do
-    describe yumrepo('mysql56-community') do
+  it "installs required packages" do
+    expect(package("Percona-Server-server-56")).to be_installed
+  end
+
+  describe "percona-release-x86_64 repo should be enabled" do
+    describe yumrepo('percona-release-x86_64') do
       it { should be_enabled }
     end
   end
