@@ -13,6 +13,7 @@ RUN ln -sf /usr/share/zoneinfo/EST5EDT /etc/localtime
 
 # install packages
 #RUN yum -y --disablerepo=epel --enablerepo=mysql56-community install mysql-server mysql
+RUN groupadd -g 27 -r mysql && useradd -u 27 -r -g mysql mysql
 RUN yum -y install Percona-Server-server-56
 ADD ./root/packages.sh /packages.sh
 RUN chmod 755 /packages.sh

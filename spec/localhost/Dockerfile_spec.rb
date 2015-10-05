@@ -34,9 +34,24 @@ describe "Dockerfile" do
     end
   end
 
-  describe "installs mysql user" do
-    describe user('root') do
+  describe "installs mysql group" do
+    describe group('mysql') do
       it { should exist }
+    end
+    describe group('mysql') do
+      it { should have_gid 27 }
+    end
+  end
+
+  describe "installs mysql user" do
+    describe user('mysql') do
+      it { should exist }
+    end
+    describe user('mysql') do
+      it { should belong_to_group 'mysql' }
+    end
+    describe user('mysql') do
+      it { should have_uid 27 }
     end
   end
 
@@ -45,7 +60,6 @@ describe "Dockerfile" do
       it { should be_linked_to '/usr/share/zoneinfo/EST5EDT' }
     end
   end  
-  
   
   describe 'Misc Settings' do
     describe command('mysql -V') do
