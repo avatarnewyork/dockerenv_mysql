@@ -1,0 +1,15 @@
+db:
+  build: .
+  ports:
+    - "3366:3306"
+  environment:
+    SERVER_ID: 1
+db2:
+  build: .
+  ports:
+    - "3666:3306"
+  links:
+    - db
+  environment:
+    SERVER_ID: 2
+    SLAVE: 1
