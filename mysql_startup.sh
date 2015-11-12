@@ -20,7 +20,7 @@ if [ ! -f /var/lib/mysql/ibdata1 ]; then
 
     chown -R mysql:mysql /var/lib/mysql
 
-    /usr/sbin/mysqld --user=mysql --max_allowed_packet=250M --server_id=${SERVER_ID} --log_bin=mysql-bin --utility-user='repl@%' --utility-user-privileges='replication slave' --utility_user_password='repl' &
+    /usr/sbin/mysqld --user=mysql --max_allowed_packet=250M --server_id=${SERVER_ID} --log_bin=mysql-bin --utility-user='repl@%' --utility-user-privileges='replication slave' --utility_user_password='repl' --relay-log="db${SERVER_ID}" &
     sleep 10s
 
     echo "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' IDENTIFIED BY 'admin'; FLUSH PRIVILEGES" | mysql
@@ -39,9 +39,29 @@ if [ ! -f /var/lib/mysql/ibdata1 ]; then
     
     killall mysqld
     sleep 10s
+else
+    if env | grep -q ^SLAVE=
+    then
+
+	/usr/sbin/mysqld --user=mysql --max_allowed_packet=250M --server_id=${SERVER_ID} --log_bin=mysql-bin --utility-user='repl@%' --utility-user-privileges='replication slave' --utility_user_password='repl'  --skip-slave-start --relay-log-recovery=1 --relay-log="db${SERVER_ID}" &
+
+	START_SLAVE="CHANGE MASTER TO MASTER_HOST='${DB_1_PORT_3306_TCP_ADDR}', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_PORT=${DB_1_PORT_3306_TCP_PORT}, MASTER_CONNECT_RETRY=10; start slave;"
+	export START_SLAVE
+    
+	SLAVE_RECOVER="--slave-skip-errors=all --relay-log-recovery=1"
+	export SLAVE_RECOVER
+
+	sleep 10s
+	mysql -uroot -h127.0.0.1 -e "${START_SLAVE}" 
+	echo $START_SLAVE
+	sleep 5s
+	killall mysqld
+	sleep 10s
+    fi
+
 fi
 
+#--relay-log="db${SERVER_ID}"
 
-
-/usr/sbin/mysqld --user=mysql --max_allowed_packet=250M --server_id=${SERVER_ID} --log_bin=mysql-bin --utility-user='repl@%' --utility-user-privileges='replication slave' --utility_user_password='repl';
+/usr/sbin/mysqld --user=mysql --max_allowed_packet=250M --server_id=${SERVER_ID} --log_bin=mysql-bin --utility-user='repl@%' --utility-user-privileges='replication slave' --utility_user_password='repl' --relay-log="db${SERVER_ID}" ${SLAVE_RECOVER}
 
