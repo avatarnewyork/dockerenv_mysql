@@ -27,7 +27,7 @@ test:
 
 deployment:
   production:
-    branch: [master, mysql50, mysql55, mysql56]
+    branch: [master, mysql50, mysql55, mysql56, percona56]
     commands:
       - ./deploy.sh
 

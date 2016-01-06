@@ -14,7 +14,7 @@ else
 fi
 
 
-if [ ! -f /var/lib/mysql/ibdata1 ]; then
+if [ ! -f /var/lib/mysql/mysql-bin.index ]; then
     /usr/bin/mysql_install_db
     sleep 10s
 
